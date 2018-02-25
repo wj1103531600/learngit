@@ -1,0 +1,247 @@
+IPython:Python交互增强版
+  Tab键可以显示已命名过的变量以及一些方法和属性
+  在变量或者函数，实例方法前面或后面加一个问号可以将有关该对象的一些通用信息显示
+  文件可以通过%run命令运行
+  粘贴的代码有时会因为缩进问题而出现错误提示，因此需要用%paste或者%cpaste，可以承载剪贴板中的一切文本
+  魔术命令的百分号可以不使用，只要通过%automagic
+  以感叹号开头的命令行表示其后所有的内容需要在系统shell中执行
+  %time和%timeit可以测试代码的执行时间，%timeit是多次执行求平均时间
+  cProfile在命令行上使用，用于执行整个程序然后输出各函数的执行时间
+  %prun能对单个语句进行时间分析
+  %run - p对整个py文件进行分析
+
+  
+Jupyter：IPython HTML Notebook
+
+Numpy：最重要的一个特点是N维数组对象（ndarray），该对象是一个快速而灵活的大数据集容器
+  其中所有元素必须是相同类型的，每个数组都有一个shape（一个表示各维度大小的元组）
+  和一个dtype(一个用用于说明数组数据类型的对象）
+  array():接受一切序列型的对象，然后创建数组，嵌套序列将会被转换成一个多维数组
+  zeros():创建指定长度或形状全0的数组
+  ones():创建指定长度或形状的全为1的数组
+  astype():可以显式的转换其dtype
+  数组自带遍历
+  NumPy复制的内容被改变其原本的内容也会发生变化，可以用copy()方法来避免
+  数组有元素索引，切片索引，布尔型索引，花式索引（利用整数数组进行索引）
+  数组不仅有transpose方法，还有一个特殊的T属性（可用于矩阵计算）
+  
+  通用函数（ufunc）是一种对ndarray中的数据执行元素级运算的函数（简单函数）
+  numpy.where():通常用于根据另一个数组而产生一个新的数组
+  数组可通过sort方法排序（多维数组可以在任何一个轴向上进行排序，只需将轴编号传给sort即可）
+  unique()可以找到数组中的唯一值并返回已排序的结果(字符串排序优先大写然后小写)
+  in1d():用于测试一个数组中的值在另一个数组中的成员资格，并返回一个布尔型数组
+  save和load是读写磁盘数组数据的两个主要函数（数组是以未压缩的原始二进制格式保存在扩展名维.npy文件中的）
+  savez可以将多个数组保存到一个压缩文件中
+  dot函数：用于矩阵乘法
+  cumsum():沿给定的轴返回元素的累计和
+  reshape():赋予数组新的形状，而不改变值
+  numpy.random.seed():用于指定随机数生成时所用算法开始的整数值，如果使用相同的seed()值，则每次生成的随机数都相同。
+  
+
+pandas：基于Numpy构建的
+  两个主要的数据结构：Series和DataFrame
+  Series:一种类似于一维数组的对象，由一组数据（各种NumPy数据类型）以及一组与之相关的数据标签（索引）组成
+    series的字符串表现形式为：索引在左边，值在右边，并且索引可以自己定。
+	可以由字典直接来创建Series
+	series对象本身及其索引都有一个name属性
+  pandas的isnull和notnull函数可用于检测缺失数据
+  DataFrame：是一个表格型的数据类型，其含有一组有序的列，每列可以是不用的值类型（数值，字符串，布尔值等）
+    既有行索引又有列索引，如果传入的列在数据中找不到，就会产生NA值
+	通过索引方式返回的列只是相应数据的视图，并不是副本，因此，对返回的Series所做的任何修改全都会反映到源DataFrame上，需要通过copy显式的复制
+	将嵌套字典传给DataFrame，外层字典的键作为列，内层键则作为行索引
+	T可以将行与列索引互换
+	DataFrame和Series的values属性会以ndarray的形式返回
+  
+  reindex():创建一个适应新索引的新对象(根据新索引进行重排)
+  method=ffill（前向填充值）  method=bfill(后向填充值）
+  drop方法返回的是一个在指定轴上删除了指定值的新对象
+  Series的索引值返回的不只是整数
+  标签的切片运算与一般的pyhton切片运算不同，其包括末端
+  索引字段ix：可以通过NumPy的标记法以及轴标签从DataFrane中选取行和列的子集（也是种重新索引的手段）
+  索引选项：
+  obj[val]:选取选取DataFrame的单个列或一组列
+  obj.ix[val]:选取DataFrame的单个行或一组行（ix索引被弃用，loc用于标签索引，iloc用于定位指数）
+  obj.ix[:,val]:选取单个列或列子集
+  obj.ix[val1,val2]:同时选取行和列
+  reindex方法:将一个或多个轴匹配到新索引
+  xs方法：根据标签选取单行或单列，并返回一个Series
+  icol，irow方法：根据整数位置选取单列或单行，并返回一个Series
+  get_value,set_value方法：根据行标签和列标签选取单个值
+  
+  pandas最重要的一个功能是可以对不用索引（可以同时发生于行和列）的对象进行算术运算(不重叠的索引处为NA值，缺失值会在算术运算过程中传播
+  索引的值可重复，用index.is_unique返回索引是否唯一的布尔值
+  当用与计算时，NA值会被自动排除，可通过skipna选项禁用
+  唯一值：函数unique()可以得到Series中的唯一值数组（返回按值频率降序排列）
+    value_counts 用于计算一个Series中各值出现的频率
+	
+  处理缺失数据：
+    滤除缺失数据：dropna()方法返回一个仅含非空数据和索引值的Series（对于DataFrame来说，会将含有缺失值的行全部丢弃，因此需要传入how=‘all’）
+	              notfull()布尔型索引也能达到这样的结果
+	填充缺失数据：fillna()方法会将缺失值替换维所指定的常数值（引入inplace=True就可以将数据进行替换而不产生副本）
+	
+  层次化索引：能在一个轴上拥有多个索引级别，在数据重塑和基于分组的操作（如透视表生成）中扮演着重要的角色
+    可通过unstack()方法被重新安排到一个DataFrame中
+	stack()可以将DataFrame转换成Series
+  
+  DataFrame的set_index函数会将其一个或多个列转换为行索引（默认情况那些被转换的列会被删去，也可以通过drop=False)
+    reset_index功能与set_index相反，层次化索引的级别会被转移到列里面
+	
+	
+	
+数据加载，存储与文件格式：
+  pandas提供一些用于将表格型数据读取为DataFrame对象函数，
+  大致可以分为：1.索引：将一个或多个列当做返回的DataFrame处理，以及是否从文件，用户获取列名
+                2.类型推断和数据转换：包括用户定义值的转换，缺失值标记列表等
+				3.日期解析：包括组合功能，比如将分散在多个列中的日期时间信息组合成结果中的单个列
+				4.迭代：支持对大文件进行逐块迭代
+				5不规整数据问题：跳过一个行，页脚，注释或其他一些不重要的东西（比如由成千上万逗号隔开的数值数据）
+				read_csv('filename'):将filename读入一个DataFrame
+				read_table('filename',sep=''):将filename读入一个DataFrame，只不过需要指定分隔符
+				read_tabel('filename',sep='正则’):用正则去处理
+				read_csv('filename',header=None)：让pandas为其分配默认的列名
+				read_csv('filename',names=列名):自己定义列名
+				        ('filename',names=列名，index_col='参数‘):将参数列作为DataFrame的索引
+                		('filename',skiprows=[0,2,3):跳过文件的第1，3，4行
+          				('filename',nrows=行数）:只读取几行（避免读取整个文件）
+						('filename',chunksize=行数)：逐块读取文件
+		将数据写到文本格式：		
+		DataFrame方法：to_csv('filename')：可以将数据写到一个以逗号分隔的文件中
+                       to_csv('filename',sep=要替换的分隔符)：将数据写到以一个指定分隔符的文件中
+                       缺失值在输出结果中会被表示为空字符串，添加参数na_rep='你想替换的标记值'				
+    	
+		手工处理分隔符格式：大部分表格型数据都能用pandas。read_table加载，但有时也需要手工处理，例如使用csv模块
+		
+		JSON数据：已经成为通过HTTP请求在Web浏览器和其他应用程序之间发送数据的标准格式之一，比CSV灵活的多的数据格式
+		  JSON对象中所有的键必须是字符串
+		  json.loads():将JSON对象转换成python对象
+		  json.dumps():将python对象转换成JSON对象
+		  
+		XML和HTML：Web信息收集
+          python中lxml能够高效且可靠的解析大文件，lxml.html处理HTML，lxml.objectfiy处理XML处理
+        	pandas内部有一个TextParrser类可用于自动类型转换（read_csv和其他解析函数内部都用到了它）
+        
+        二进制数据格式：实现数据的二级制格式存储最简单的方法之一是使用Python内置的pickle序列化。
+        
+        使用HDF5格式：一个实现高效读写磁盘上以二进制格式存储的科学数据的工业级库，是一个C库
+          在Python中有两个接口（PyTables和h5py）：h5py提供了一种直接而高级的HDF5 API访问接口
+                                                 PyTables则抽象了HDF5的许多细节以提供多种灵活的数据容器，表索引，查询功能以及对核外计算机技术的某些支持
+				如果处理海量数据，好好研究这个。
+        
+        读取Microsoft Excel文件：使用ExcelFile类和xlrd包和openpyxl包（需要下载）
+        
+
+        使用数据库：将数据从SQL加载到DataFrames，sqlite3模块
+
+    数据规整化：清理，转换，合并，重塑
+       合并数据集：·pandas.merge可根据一个或多个键将不同DataFrame中的行连接起来，
+                    SQL或其他关系型数据库的用户对此应该会比较熟悉，因为它实现的就是数据库的连接操作
+                    
+                   ·pandas.concat可以沿着一条轴将多个对象堆叠到一起
+                    				   
+	               ·实例方法combine_first可以将重复数据编接在一起，用一个对象中的值填充另一个对象中的缺失值
+				   
+	        数据库风格的DataFrame合并：merge默认是用交集连接（只保留共同的值），可以增加参数how=‘outer/left/right’（外连接求取的是键的并集
+			  在进行列-列连接时，DataFrame对象中的索引会被丢弃
+              索引上的合并：merge方法传入left_index=True或right_index=True（或两个都传），以说明索引应该被用作连接键
+	          concat()函数可以将多个没有重叠索引的Series的值和索引粘合起来，是在axis=0上工作的，若axis=1，结果就变成了DataFrame
+			     如果想创建层次化索引，使用keys参数即可达到目的（series中），如果在axis=1时对Series进行合并，keys则会成为DataFrame的列头
+				 
+	    数据转换：
+		    
+			移除重复数据
+			duplicated():返回一个布尔型Series，表示各行是否是重复行
+			drop_duplicates():返回一个移除了重复行的DataFrame(两个函数都默认保留第一个出现的组合，传入参数take_last=True可以保留最后一个
+			
+			利用函数或映射进行数据转换
+			Series的map()方法可以接受一个函数家或含有映射关系的字典型对象，使用map是一种实现元素级转换以及其他数据清理工作的便捷方式
+			
+			替换值
+			fillna()方法填充缺失数据，replace(待替换的值，numpy.nan):将待替换的值转化成NA或者其他指定的值，也可以传入列表，字典
+			
+			重命名轴索引
+			轴标签也可以通过函数或映射进行转换，也有一个map()方法，可通过map方法改变轴的标签
+			
+			离散化和面元划分
+			为了便于分析，连续数据常常被离散化或拆分为‘面元’，使用cut()方法返回一个特殊的Categorical对象（一组表示面元名称的字符串）
+			  可通过参数labels指定面元名称，如果向cut传入的是面元的数量，而不是确切的面元边界，则其会根据数据的最小值和最大值计算等长面元
+			  qcut()方法类似于cut，cut无法使各个面元中含有相同数量的数据点，而qcut由于使用样本分位数，因此可以得到大小基本相等的面元
+			 
+			检测和过滤异常值
+			异常值的过滤或变换运算在很大程度上其实是数组运算，通过数组索引的方法选出符合条件的值或行
+			
+			排列和随机采样
+			利用numpy.random.permutation函数可轻松实现对Series或DataFrame的列的排列工作（随机重排序）
+			  再用take函数或者索引操作使用上面的函数即可实现新顺序的数组
+			
+			计算指标/哑变量
+			将分类变量转换为‘哑变量矩阵‘或’指标矩阵‘，如果DataFrame的某一列中含有k个不同的值，则可以派生出一个k列矩阵或DateFrame
+			
+			字符串对象方法
+			以逗号分隔的字符串可以通过split分割成一个列表
+	        split常常结合strip（用于修剪空白符（包括换行符））一起使用
+	        ’分隔符‘join()用于替换原有分隔符
+			
+	绘图与可视化
+	#import matplotlib.pyplot as plt
+	    matplotlib
+		  plot()创建线条图
+		  subplot()创建多轴（即子图）
+		  imshow()显示图像
+		  pcolormesh()创建轮廓和伪彩色
+		  hist()创建直方图并返回统计数或概率
+		  matplotlib.path模块可添加任意路径
+		  bar()制作条形图
+		  pie(）创建饼图
+		  scatter()创建散点图
+		  
+		plot():
+		plot(x,y)创建xy轴，默认线条样式和颜色的线条图
+		plot(x,y,'bo') 绘制xy使用蓝色圆圈标记
+        plot(y)绘制将x的值作为0，1，2，3等默认值
+		plot(x1,y1,'关键字参数'，x2,y2,'关键词参数)可一次创建多个线条图
+		plot（x1,y1,x2,y2,'关键字参数‘) kwargs适用于所有这些行（所有的行属性都可以通过关键字参数来控制
+		可根据关键字参数来空时行属性：
+		plot （x ， y ， color = 'green' ， linestyle = 'dashed' ， marker = 'o' ，markerfacecolor = 'blue' ， markersize = 12 ）
+        axis([0,6,0,20]):创建x[0~6]和y[0~20]的图
+		xlabel与ylabel创建x和y轴大的标签
+		grid()创建网格
+		
+		
+		subplot():
+		subplot(nrows, ncols, index, **kwargs)  关键字参数：facecolor:子图的背景颜色，可以是任何有效的颜色说明符
+		                                                    polar:一个布尔标志，指示子绘图应该是极坐标投影，默认为False
+                                                            projection:一个字符串，提供要用于子图的自定义投影的名称	
+        annotate():在图上创建注释
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+															
