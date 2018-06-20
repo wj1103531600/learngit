@@ -1,0 +1,62 @@
+Git使用操作：
+创建空目录
+$ mkdir + 目录名
+$ cd + 目录名
+$ pwd(显示创建文件当前目录)
+
+$ git init(该命令将该目录变成Git可以管理的仓库)
+
+创建新文件（文本文档）：
+要将该文件放到Git仓库
+$ git add + 文件名(将文件添加到仓库) 
+$ git commit + -m"本次提交的说明"
+
+修改文件内容后:
+$ git status(查看结果,方便时刻掌握仓库当前的状态)
+$ git diff(查看上次具体修改了什么内容)
+提交文件到仓库（add和commit）
+
+$ git log(查看历史纪录)
+$ git log --pretty=oneline(减少历史记录输出的信息)
+$ git reset --hard HEAD^(退回上一个版本)
+$ git reset --hard +commit id（之前第一个文件的）
+$ git reflog(显示被记录的每一条命令)
+$ git diff HEAD -- +文件名（查看工作区和版本库里卖弄最新版本的区别）
+$ git checkout -- +文件名（丢弃工作区的修改,
+让文件回到最近一次git commit或者git add时的状态）
+$ git reset HEAD +文件名(将暂存区的修改撤销掉)
+$ rm +文件名（工作区删除文件）
+$ git rm +文件名（从版本库删除该文件）
+$ git checkout -- +文件名（将误删的文件恢复到最新版本）
+$ git remote add origin git@github.com:wj1103531600/learngit.git(关联一个远程库)
+$ git push -u origin master(把本地库的内容推送到远程)
+$ git checkout -b dev(创建dev分支，然后切换到dev分支)
+$ git checkout +分支名（跳转至该分支）
+$ git branch(查看当前分支)
+$ git merge(合并制定分支到当前分支)
+$ git branch -d dev(删除dev分支)
+$ git merge --no-ff -m"merge with no-ff" dev(合并dev分支，--no-ff表示禁用Fast forward)
+平时干活应该在dev分支上，在某些时候将dev分支合并到master上
+$ git stash(将当前工作现场储藏起来，等以后回复现场后继续工作)
+$ git stash list(查看工作现场存的位置)
+$ git stash apply(恢复stash内容，但是恢复后stash内容并不删除)
+$ git stash drop(删除stash内容)
+$ git stash pop(恢复内容的同时把stash删去)
+$ git remote(查看远程库的信息)
+$ git remote -v(显示远程库更详细的信息)
+$ git push origin +分支名（推送分支到远程库）
+$ git pull（从origin/dev将最新提交抓下来）
+$ git branch --set-upstream dev origin/dev(创建本地dev分支与远程origin/dev分支的链接)
+标签不是按时间顺序列出，而是按字母排序的
+$ git tag +标签名（创建一个新标签）
+$ git tag (查看所有标签)
+$ git tag +标签名 +commit id（对历史操作创建标签）
+$ git show +标签名（查看标签信息）
+$ git tag -a +标签名 -m"说明"+commit id(创建标签附带说明)
+$ git tag -d +标签名（删除标签）
+$ git push origin +标签名（推送某个标签到远程）
+$ git push origin :refs/tags/+标签名（删除远程标签）
+忽略文件的原则：1.忽视操作系统自动生成的文件，比如略缩图等
+2.忽略编译生成的中间文件，可执行文件等，也就是如果一个文件是通过另一个文件自动生成的
+那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件
+3.忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件
